@@ -124,7 +124,7 @@ class BookingController extends Controller
 
     private function splitDateTime($datetime)
     {
-        $date_time_array = explode('T', $datetime);
+        $date_time_array = explode(' ', $datetime);
         return [
             'date' => $date_time_array[0],
             'time' => $date_time_array[1]
