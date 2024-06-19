@@ -235,6 +235,7 @@ $(document).ready(function() {
             returnInput.addClass("disabled-input");
             returnInput.prop("disabled", true);
             returnInput.val(returnDateString);
+            returnCheckbox.val = "";
         }
     }
 

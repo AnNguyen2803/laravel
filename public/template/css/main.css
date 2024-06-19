@@ -2095,8 +2095,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .main-menu {
-  padding-bottom: 20px;
-  padding-top: 20px;
   background: rgba(255, 255, 255, 0.15);
   padding-left: 15px;
   padding-right: 15px;
@@ -2554,7 +2552,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 .banner-right .nav-tabs {
   border-bottom: none;
   margin-bottom: 5px;
-  margin-top: 40px;
+  margin-top: 100px;
 }
 
 .banner-right .nav-item {

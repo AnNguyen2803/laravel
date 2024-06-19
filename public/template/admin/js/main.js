@@ -7,21 +7,24 @@ $.ajaxSetup({
 function removeRow(id, url)
 {
     var idString = id.toString();
-    if(confirm("Xóa mà không thể khôi phục. Bạn có chắc muốn xóa ?")) {
+    if (confirm("Xóa mà không thể khôi phục. Bạn có chắc muốn xóa?")) {
         $.ajax({
             type: 'DELETE',
             datatype: 'JSON',
-            data: {id: idString},
+            data: {id_cb: idString},
             url: url,
             success: function(result){
-                if(result.error ===false){
+                if (result.error === false) {
                     alert(result.message);
-                    location.reload();
-                } else{
-                    alert('Xóa lỗi vui lòng thử lại');
+                    location.reload(); // Reload trang sau khi xóa thành công
+                } else {
+                    alert('Xóa lỗi. Vui lòng thử lại');
                 }
+            },
+            error: function() {
+                alert('Xóa lỗi. Vui lòng thử lại sau');
             }
-        })
+        });
     }
 }
 //Up load file

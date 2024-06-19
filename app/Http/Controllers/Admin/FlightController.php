@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Flight;
+use App\Models\ChuyenBay;
+use App\Models\Hang;
+use App\Models\Quangduong;
+use App\Models\Hangcho;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -20,37 +23,41 @@ class FlightController extends Controller
 
     public function index()
     {
+        $flights = $this->flightAdminService->get();
+
        return view('admin.flight.list', [
            'title' => 'Danh sách chuyến bay',
            'flights' => $this->flightAdminService->get()
        ]);
     }
-
-    public function create(MenuService $menuService)
-    {
-        $this->menuService = $menuService;
-        return view('admin.flight.add', [
-            'title' => 'Danh sách chuyến bay mới',
-            'menus' => $this->menuService->getParent()
-        ]);
-    }
+    
+    public function create()
+{
+    $hangs = Hang::all();
+    $quangduongs = Quangduong::all();
+    $hangchos = Hangcho::all();
+    $title = "Thêm chuyến bay mới";
+    return view('admin.flight.add', compact('hangs', 'quangduongs', 'hangchos', 'title'));
+}
 
     public function store(FlightRequest $request)
     {
-        $this->flightAdminService->insert($request);
+        $result = $this->flightAdminService->insert($request);
 
-        return redirect()->back();
+        if($result){
+            return redirect()->back();
+        }
     }
 
-    public function show(Flight $flight)
+    public function show(Chuyenbay $flight)
     {
         return view('admin.flight.edit', [
             'title' => 'Chỉnh sửa chuyến bay',
-            'flight' => $flight
+            'flight' => $flight->load('quangduong', 'banggia.hangcho')
         ]);
     }
 
-    public function update(Request $request,Flight $flight)
+    public function update(Request $request,Chuyenbay $flight)
     {
         $result = $this->flightAdminService->update($request, $flight);
         if($result){
@@ -62,10 +69,10 @@ class FlightController extends Controller
     {
         $result = $this->flightAdminService->delete($request);
 
-        if($result){
+        if ($result) {
             return response()->json([
                 'error' => false,
-                'message' => 'Xóa thành công sản phẩm'
+                'message' => 'Xóa thành công chuyến bay'
             ]);
         }
 

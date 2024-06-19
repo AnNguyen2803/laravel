@@ -43,7 +43,7 @@ class Helper
             {
                 $html .= '
                     <li>
-                        <a href="/danh-muc/' . $menu->id . '-' . \Str::slug($menu->name, '-') . '.html">
+                        <a href="' . \Str::slug($menu->name, '-') . '">
                             ' . htmlspecialchars($menu->name) . '
                         </a>';
                 if (self::isChild($menus, $menu->id)) {

@@ -29,11 +29,12 @@ class RegisterController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-
+        $maxIdKh = User::max('id') + 1;
         // Create a new user
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->id_kh = $maxIdKh;
         $user->password = Hash::make($request->password);
         $user->save();
 

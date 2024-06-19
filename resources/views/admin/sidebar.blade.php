@@ -36,28 +36,6 @@
                 with font-awesome or any other icon font library -->
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                <i class="fa-solid fa-bars"></i>
-                <p style = "margin-left: 20px">
-                    Danh mục
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-                </a>
-                <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/admin/menus/add" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Thêm danh mục</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/admin/menus/list" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Danh sách danh mục</p>
-                    </a>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
                 <i class="fa-solid fa-plane-departure"></i>
                 <p style = "margin-left: 20px">
                     Chuyến bay
@@ -80,45 +58,33 @@
            </li>
            <li class="nav-item">
                 <a href="#" class="nav-link">
-                <i class="fa-solid fa-car"></i>
+                <i class="fa-solid fa-user"></i>
                 <p style = "margin-left: 20px">
-                    Thuê xe
+                    Người dùng
                     <i class="right fas fa-angle-left"></i>
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="/admin/carRental/add" class="nav-link">
+                    <a href="/admin/users/list" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Thêm thuê xe</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/admin/carRental/list" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Danh sách xe cho thuê</p>
+                    <p>Danh sách người dùng</p>
                     </a>
                 </ul>
            </li>
            <li class="nav-item">
                 <a href="#" class="nav-link">
-                <i class="fa-solid fa-hotel"></i>
+                <i class="fa-solid fa-receipt"></i>
                 <p style = "margin-left: 20px">
-                    Khách sạn
+                    Giao dịch
                     <i class="right fas fa-angle-left"></i>
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="/admin/hotel/add" class="nav-link">
+                    <a href="/admin/transaction/list" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Thêm Khách Sạn</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/admin/hotel/list" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Danh sách Khách Sạn</p>
+                    <p>Danh sách giao dịch</p>
                     </a>
                 </ul>
            </li>
