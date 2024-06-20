@@ -13,53 +13,60 @@ use Carbon\Carbon;
 class BookingController extends Controller
 {
     public function submitBooking(Request $request)
-    {
-        $from = $request->input('from');
-        $to = $request->input('to');
-        $startDate = $request->input('start');
-        $returnDate = $request->input('return');
-        $class = $request->input('class');
-        $total = $request->input('adults');
+{
+    $from = $request->input('from');
+    $to = $request->input('to');
+    $startDate = $request->input('start');
+    $returnDate = $request->input('return');
+    $class = $request->input('class');
+    $total = $request->input('adults');
 
+    // Chuyển đổi định dạng ngày tháng
+    $startOfDay = date('d/m/Y H:i', strtotime($startDate . ' 00:00'));
+    $endOfDay = date('d/m/Y H:i', strtotime($startDate . ' 23:59'));
 
-        $startOfDay = date('d-m-Y 00:00:00', strtotime($startDate));
-        $endOfDay = date('d-m-Y 23:59:59', strtotime($startDate));
-
-        if ($returnDate) {
-            $endOfReturnDay = date('d-m-Y 23:59:59', strtotime($returnDate));
-            $flights = Chuyenbay::join('hang', 'chuyenbay.id_hang', '=', 'hang.id_hang')
-                                ->join('quangduong', 'chuyenbay.id_qd', '=', 'quangduong.id_qd')
-                                ->join('banggia', 'chuyenbay.id_cb', '=', 'banggia.id_cb')
-                                ->join('hangcho', 'banggia.id_hangcho', '=', 'hangcho.id_hangcho')
-                                ->where('quangduong.diemkhoihanh', 'LIKE', '%' . $from . '%')
-                                ->where('quangduong.diemketthuc', 'LIKE', '%' . $to . '%')
-                                ->whereBetween('chuyenbay.thoigianbd', [$startOfDay, $endOfReturnDay])
-                                ->where('hangcho.hang', $class)
-                                ->select('chuyenbay.*', 'hang.tenhang', 'quangduong.diemkhoihanh', 'quangduong.diemketthuc', 'banggia.gia', 'hangcho.hang')
-                                ->get();
-        } else {
-            $flights = Chuyenbay::join('hang', 'chuyenbay.id_hang', '=', 'hang.id_hang')
-                                ->join('quangduong', 'chuyenbay.id_qd', '=', 'quangduong.id_qd')
-                                ->join('banggia', 'chuyenbay.id_cb', '=', 'banggia.id_cb')
-                                ->join('hangcho', 'banggia.id_hangcho', '=', 'hangcho.id_hangcho')
-                                ->where('quangduong.diemkhoihanh', 'LIKE', '%' . $from . '%')
-                                ->where('quangduong.diemketthuc', 'LIKE', '%' . $to . '%')
-                                ->whereBetween('chuyenbay.thoigianbd', [$startOfDay, $endOfDay])
-                                ->where('hangcho.hang', $class)
-                                ->select('chuyenbay.*', 'hang.tenhang', 'quangduong.diemkhoihanh', 'quangduong.diemketthuc', 'banggia.gia', 'hangcho.hang')
-                                ->get();
-        }
-
-        return view('pages.listflight', [
-            'title' => 'Danh sách chuyến bay',
-            'flights' => $flights,
-            'from' => $from,
-            'to' => $to,
-            'startDate' => $startDate,
-            'class' => $class,
-            'total' => $total
-        ]);
+    if ($returnDate) {
+        $endOfReturnDay = date('d/m/Y H:i', strtotime($returnDate . ' 23:59'));
     }
+
+    // Khởi tạo query
+    $flights = Chuyenbay::join('hang', 'chuyenbay.id_hang', '=', 'hang.id_hang')
+                        ->join('quangduong', 'chuyenbay.id_qd', '=', 'quangduong.id_qd')
+                        ->join('banggia', 'chuyenbay.id_cb', '=', 'banggia.id_cb')
+                        ->join('hangcho', 'banggia.id_hangcho', '=', 'hangcho.id_hangcho')
+                        ->select('chuyenbay.*', 'hang.tenhang', 'quangduong.diemkhoihanh', 'quangduong.diemketthuc', 'banggia.gia', 'hangcho.hang');
+
+    // Áp dụng các điều kiện tìm kiếm nếu có
+    if ($from) {
+        $flights->where('quangduong.diemkhoihanh', 'LIKE', '%' . $from . '%');
+    }
+    if ($to) {
+        $flights->where('quangduong.diemketthuc', 'LIKE', '%' . $to . '%');
+    }
+    if ($startDate) {
+        $flights->whereBetween('chuyenbay.thoigianbd', [$startOfDay, $endOfDay]);
+    }
+    if ($returnDate) {
+        $flights->orWhereBetween('chuyenbay.thoigianbd', [$startOfDay, $endOfReturnDay]);
+    }
+    if ($class) {
+        $flights->where('hangcho.hang', $class);
+    }
+
+    // Lấy kết quả
+    $flights = $flights->get();
+
+    return view('pages.listflight', [
+        'title' => 'Danh sách chuyến bay',
+        'flights' => $flights,
+        'from' => $from,
+        'to' => $to,
+        'startDate' => $startDate,
+        'class' => $class,
+        'total' => $total,
+    ]);
+}
+
     public function process(Request $request, $flight_id)
     {
 
@@ -124,7 +131,7 @@ class BookingController extends Controller
 
     private function splitDateTime($datetime)
     {
-        $date_time_array = explode('T', $datetime);
+        $date_time_array = explode(' ', $datetime);
         return [
             'date' => $date_time_array[0],
             'time' => $date_time_array[1]
@@ -141,7 +148,7 @@ class BookingController extends Controller
             ->join('chuyenbay', 'datvemaybay.id_cb', '=', 'chuyenbay.id_cb')
             ->join('banggia', 'chuyenbay.id_cb', '=', 'banggia.id_cb')
             ->join('hangcho', 'banggia.id_hangcho', '=', 'hangcho.id_hangcho')
-            ->where('datvemaybay.id_kh', $userId)
+            ->where('datvemaybay.id_kh', $userId)   
             ->select(
                 'datvemaybay.madatcho',
                 'datvemaybay.danhxung',
@@ -170,6 +177,11 @@ class BookingController extends Controller
 
         // Trả về view với dữ liệu và thời gian hiện tại
         return view('bookings.index', ['bookings' => $bookings, 'now' => $now]);
+    }
+    public function cancel($id)
+    {
+        DB::table('datvemaybay')->where('madatcho', $id)->delete();
+        return redirect('/my-bookings')->with('success', 'Đã hủy đặt chỗ thành công.');
     }
 
 

@@ -8,6 +8,9 @@ use App\Models\Banggia;
 use App\Models\Datvemaybay;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Mail\TicketConfirmation;
+use Illuminate\Support\Facades\Mail;
+use Auth;
 
 class PaymentController extends Controller
 {
@@ -131,8 +134,14 @@ public function successPayment(Request $request)
 
 
     // Ma khách hàng gần nhất 
-    $lastCustomerId = DatVeMayBay::max('id_kh');
-    $newCustomerId = $lastCustomerId ? $lastCustomerId + 1 : 1;
+    if (Auth::check()) {
+        // Nếu có quyền 'user', lấy id_kh của user
+        $newCustomerId = Auth::user()->id_kh;
+    } else {
+        // Nếu không có quyền 'user', lấy max id_kh từ bảng DatVeMayBay và tăng lên 1
+        $lastCustomerId = DatVeMayBay::max('id_kh');
+        $newCustomerId = $lastCustomerId ? $lastCustomerId + 1 : 1;
+    }
 
     // Cập nhật số chỗ trong bảng banggia
     if ($banggia->socho >= count($passengers)) {
@@ -166,6 +175,9 @@ public function successPayment(Request $request)
 
         $madatcho++;
         $newCustomerId++;
+
+        $email = $customerInfo['customerEmail'];
+        Mail::to($email)->send(new TicketConfirmation($customerInfo, $flightDetails, $passengerInfo));
 
         return response()->json(['success' => true]);
     }

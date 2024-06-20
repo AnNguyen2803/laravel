@@ -66,6 +66,7 @@ Route::post('logout', [\App\Http\Controllers\Users\LoginController::class, 'logo
 Route::get('/', [\App\Http\Controllers\MainController::class , 'index']);
 Route::post('/booking-submit', [BookingController::class, 'submitBooking'])->name('booking.submit');
 Route::post('/my-bookings', [BookingController::class, 'show'])->middleware('auth');
+Route::delete('/cancel-booking/{id}', [BookingController::class, 'cancel'])->middleware('auth');
 Route::post('/booking-process/{flight_id}', [BookingController::class, 'process'])->name('booking.process');
 
 

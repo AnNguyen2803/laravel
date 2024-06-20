@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Auth;
         <div class="row align-items-center">
             <div class="col-lg-6 col-sm-6 col-6 header-top-left">
                 <ul>
-                    <li><a href="#">Visit Us</a></li>
-                    <li><a href="#">Buy Tickets</a></li>
+                    <li><a href="#">Nhóm 5</a></li>
+                    <li><a href="#"></a></li>
                 </ul>			
             </div>
             <div class="col-lg-6 col-sm-6 col-6 header-top-right">

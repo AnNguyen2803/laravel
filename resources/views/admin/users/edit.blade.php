@@ -17,6 +17,14 @@
             <input type="email" id="email" name="email" value="{{ $user->email }}" class="form-control">
         </div>
 
+        <div class="form-group">
+        <label for="quyen">Quyền</label>
+        <select id="quyen" name="quyen" class="form-control">
+            <option value="0" {{ $user->quyen == 0 ? 'selected' : '' }}>User</option>
+            <option value="1" {{ $user->quyen == 1 ? 'selected' : '' }}>Admin</option>
+        </select>
+        </div>
+
         <!-- Các trường dữ liệu khác cần chỉnh sửa -->
 
         <button type="submit" class="btn btn-primary">Save Changes</button>

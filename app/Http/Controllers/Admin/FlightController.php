@@ -14,6 +14,7 @@ use App\Http\Requests\Flight\FlightRequest;
 use App\Http\Services\Flight\FlightAdminService;
 use App\Http\Services\Menu\MenuService;
 
+
 class FlightController extends Controller
 {
     public function __construct(FlightAdminService $flightAdminService)
@@ -32,13 +33,13 @@ class FlightController extends Controller
     }
     
     public function create()
-{
-    $hangs = Hang::all();
-    $quangduongs = Quangduong::all();
-    $hangchos = Hangcho::all();
-    $title = "Thêm chuyến bay mới";
-    return view('admin.flight.add', compact('hangs', 'quangduongs', 'hangchos', 'title'));
-}
+    {
+        $hangs = Hang::all();
+        $quangduongs = Quangduong::all();
+        $hangchos = Hangcho::all();
+        $title = "Thêm chuyến bay mới";
+        return view('admin.flight.add', compact('hangs', 'quangduongs', 'hangchos', 'title'));
+    }
 
     public function store(FlightRequest $request)
     {

@@ -19,9 +19,6 @@ class FlightAdminService
     }
     public function insert($request)
     {
-        // $check = $this->checkDepartureBeforeArrival($request);
-        // if($check == false) return false;
-        
         DB::beginTransaction();
         
         try {
@@ -46,7 +43,7 @@ class FlightAdminService
                 'id_qd' => $new_id_qd,
                 'diemkhoihanh' => $data['departure_airport'],
                 'diemketthuc' => $data['arrival_airport'],
-                'thoigian' => $$flight_duration_minutes
+                'thoigian' => $flight_duration_minutes
             ];
 
             // Thêm quang duong vào bảng quangduong

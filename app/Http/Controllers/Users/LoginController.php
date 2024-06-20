@@ -25,7 +25,13 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/'); 
+            // Kiểm tra quyền của người dùng
+            $user = Auth::user();
+            if ($user->quyen == 0) {
+                return redirect()->intended('/');
+            } elseif ($user->quyen == 1) {
+                return redirect()->intended('/admin');
+            }
         }
 
         return back()->withErrors([
